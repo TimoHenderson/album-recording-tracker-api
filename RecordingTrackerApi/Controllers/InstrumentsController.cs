@@ -8,9 +8,7 @@ using RecordingTrackerApi.Services;
 
 namespace RecordingTrackerApi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    [Authorize(Roles = UserRoles.Engineer)]
+
     public class InstrumentsController : GenericController<Instrument>
     {
         public InstrumentsController(InstrumentsService service) : base(service) { }

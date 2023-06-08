@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace RecordingTrackerApi.Services;
 
-public class ArtistsService: GenericEntityService<Artist>
+public class ArtistsService : GenericEntityService<Artist>
 {
     public ArtistsService(RecordingContext context) : base(context) { }
 
-    public override async Task<IEnumerable<Artist>> GetAll()
+    public override async Task<IEnumerable<Artist>> GetAll(string UserId)
     {
         return await _dbSet
         .Include(a => a.Children)
@@ -18,9 +18,9 @@ public class ArtistsService: GenericEntityService<Artist>
         .ToListAsync();
     }
 
- 
 
-    public override async Task<Artist?> Get(int id)
+
+    public override async Task<Artist?> Get(string UserId, int id)
     {
         var artist = await _dbSet.FindAsync(id);
 

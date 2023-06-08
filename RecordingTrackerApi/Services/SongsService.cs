@@ -9,7 +9,7 @@ public class SongsService : GenericEntityService<Song>
 {
     public SongsService(RecordingContext context) : base(context) { }
 
-    public override async Task<IEnumerable<Song>> GetAll()
+    public override async Task<IEnumerable<Song>> GetAll(string userId)
     {
         return await _dbSet
         .Include(s => s.Parent)
@@ -18,7 +18,7 @@ public class SongsService : GenericEntityService<Song>
         .ToListAsync();
     }
 
-    public override async Task<Song?> Get(int id)
+    public override async Task<Song?> Get(string userId, int id)
     {
         var artist = await _dbSet.FindAsync(id);
 
@@ -36,13 +36,13 @@ public class SongsService : GenericEntityService<Song>
         }
     }
 
-    public override async Task<Song?> Create(Song song)
+    public override async Task<Song?> Create(string userId, Song song)
     {
         var album = await _context.Albums.FindAsync(song.ParentNum);
 
         if (album == null) return null;
         else song.Parent = album;
-        return await base.Create(song);
+        return await base.Create(userId, song);
     }
 
 }

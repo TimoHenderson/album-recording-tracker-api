@@ -18,14 +18,14 @@ namespace RecordingTrackerApi.Services
 
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAll()
+        public virtual async Task<IEnumerable<TEntity>> GetAll(string userId)
         {
             return await _dbSet
                 .AsNoTracking()
                 .ToListAsync();
         }
 
-        public virtual async Task<TEntity?> Get(int id)
+        public virtual async Task<TEntity?> Get(string userId, int id)
         {
             return await _dbSet
                 .AsNoTracking()
@@ -33,14 +33,14 @@ namespace RecordingTrackerApi.Services
         }
 
 
-        public virtual async Task<TEntity?> Create(TEntity entity)
+        public virtual async Task<TEntity?> Create(string userId, TEntity entity)
         {
             _dbSet.Add(entity);
             await _context.SaveChangesAsync();
             return entity;
         }
 
-        public virtual async Task<TEntity?> Update(TEntity entity)
+        public virtual async Task<TEntity?> Update(string userId, TEntity entity)
         {
             var updatedEntity = _context.Update(entity).Entity;
             await _context.SaveChangesAsync();
@@ -48,7 +48,7 @@ namespace RecordingTrackerApi.Services
         }
 
 
-        public async Task<TEntity?> Delete(int id)
+        public async Task<TEntity?> Delete(string userId, int id)
         {
             var entity = await _dbSet.FindAsync(id);
             if (entity == null) return null;

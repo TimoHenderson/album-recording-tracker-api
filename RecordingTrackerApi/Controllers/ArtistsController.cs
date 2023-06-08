@@ -7,9 +7,7 @@ using RecordingTrackerApi.Data.Helpers;
 
 namespace RecordingTrackerApi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    [Authorize(Roles = UserRoles.Admin)]
+
 
     public class ArtistsController : GenericController<Artist>
     {

@@ -10,7 +10,7 @@ public class PartsService : GenericEntityService<Part>
     public PartsService(RecordingContext context) : base(context) { }
 
 
-    public override async Task<IEnumerable<Part>> GetAll()
+    public override async Task<IEnumerable<Part>> GetAll(string userId)
     {
         return await _dbSet
         .Include(s => s.Parent)
@@ -21,7 +21,7 @@ public class PartsService : GenericEntityService<Part>
 
 
 
-    public override async Task<Part?> Get(int id)
+    public override async Task<Part?> Get(string userId, int id)
     {
         var artist = await _dbSet.FindAsync(id);
 
@@ -39,7 +39,7 @@ public class PartsService : GenericEntityService<Part>
         }
     }
 
-    public override async Task<Part?> Create(Part part)
+    public override async Task<Part?> Create(string userId, Part part)
     {
         var song = await _context.Songs.FindAsync(part.ParentNum);
         var instrument = await _context.Instruments.FindAsync(part.InstrumentNum);
@@ -50,7 +50,7 @@ public class PartsService : GenericEntityService<Part>
             part.Parent = song;
             part.Instrument = instrument;
         }
-        return await base.Create(part);
+        return await base.Create(userId, part);
     }
 
 }

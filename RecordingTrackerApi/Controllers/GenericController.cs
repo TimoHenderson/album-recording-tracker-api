@@ -4,10 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecordingTrackerApi.Models;
 using RecordingTrackerApi.Services;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace RecordingTrackerApi.Controllers
 {
-
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
     public abstract class GenericController<TEntity> : ControllerBase
         where TEntity : IEntityBase
     {
@@ -22,7 +26,7 @@ namespace RecordingTrackerApi.Controllers
         [HttpGet]
         public virtual async Task<ActionResult<IEnumerable<TEntity>>> GetAll()
         {
-            var entities = await _service.GetAll();
+            var entities = await _service.GetAll(UserId);
             if (entities == null)
             {
                 return NotFound();
@@ -33,7 +37,7 @@ namespace RecordingTrackerApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TEntity>>? Get(int id)
         {
-            var entity = await _service.Get(id);
+            var entity = await _service.Get(UserId, id);
 
             if (entity == null)
             {
@@ -46,7 +50,7 @@ namespace RecordingTrackerApi.Controllers
         [HttpPost]
         public async Task<ActionResult<TEntity>> Post(TEntity entity)
         {
-            var savedEntity = await _service.Create(entity);
+            var savedEntity = await _service.Create(UserId, entity);
             if (savedEntity == null)
             {
                 return Problem("Error - not created");
@@ -59,7 +63,7 @@ namespace RecordingTrackerApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, TEntity entity)
         {
-            var updatedEntity = await _service.Update(entity);
+            var updatedEntity = await _service.Update(UserId, entity);
             if (updatedEntity == null) return BadRequest();
             return Ok(updatedEntity);
         }
@@ -67,10 +71,12 @@ namespace RecordingTrackerApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAlbum(int id)
         {
-            var deletedEntity = await _service.Delete(id);
+            var deletedEntity = await _service.Delete(UserId, id);
             if (deletedEntity == null) return BadRequest();
             return Ok(deletedEntity);
         }
+
+        private string UserId => HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
     }
 }
