@@ -34,9 +34,16 @@ namespace RecordingTrackerApi.Services
             _tokenValidationParameters = tokenValidationParameters;
         }
 
-        public Task<AuthResultVM> LoginUser(LoginVM loginVM)
+        public async Task<AuthResultVM> LoginUser(LoginVM loginVM)
         {
-            throw new NotImplementedException();
+            var userExists = await _userManager.FindByEmailAsync(loginVM.EmailAddress);
+            if (userExists != null && await _userManager.CheckPasswordAsync(userExists, loginVM.Password))
+            {
+                var tokenValue = await GenerateJWTTokenAsync(userExists, null);
+
+                return tokenValue;
+            }
+            return null;
         }
 
         public Task<AuthResultVM> RefreshToken(TokenRequestVM tokenRequestVM)

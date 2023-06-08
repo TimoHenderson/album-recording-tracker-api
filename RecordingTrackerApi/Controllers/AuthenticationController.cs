@@ -44,23 +44,21 @@ namespace RecordingTrackerApi.Controllers
             return BadRequest(result.ToString());
         }
 
-        //[HttpPost("login-user")]
-        //public async Task<IActionResult> Login([FromBody] LoginVM loginVM)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest("Please provide all the required fields");
-        //    }
+        [HttpPost("login-user")]
+        public async Task<IActionResult> Login([FromBody] LoginVM loginVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Please provide all the required fields");
+            }
 
-        //    var userExists = await _userManager.FindByEmailAsync(loginVM.EmailAddress);
-        //    if (userExists != null && await _userManager.CheckPasswordAsync(userExists, loginVM.Password))
-        //    {
-        //        var tokenValue = await GenerateJWTTokenAsync(userExists, null);
+            var loginResult = await _service.LoginUser(loginVM);
 
-        //        return Ok(tokenValue);
-        //    }
-        //    return Unauthorized();
-        //}
+            if (loginResult != null)
+                return Ok(loginResult);
+
+            return Unauthorized();
+        }
 
         //[HttpPost("refresh-token")]
         //public async Task<IActionResult> RefreshToken([FromBody] TokenRequestVM tokenRequestVM)
