@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 25.0.1705.6
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordingTrackerApi", "RecordingTrackerApi.csproj", "{6114723C-BA33-418C-99D1-8F6A61472A8D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordingTrackerApi", ".\RecordingTrackerApi\RecordingTrackerApi.csproj", "{6114723C-BA33-418C-99D1-8F6A61472A8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordingTrackerApiTests", "..\RecordingTrackerApiTests\RecordingTrackerApiTests.csproj", "{D8260323-5B8D-447F-A9D6-D56E4D700A2C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordingTrackerApiTests", ".\RecordingTrackerApiTests\RecordingTrackerApiTests.csproj", "{D8260323-5B8D-447F-A9D6-D56E4D700A2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

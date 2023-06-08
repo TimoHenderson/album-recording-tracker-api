@@ -80,6 +80,7 @@ builder.Services.AddScoped<AlbumsService>();
 builder.Services.AddScoped<SongsService>();
 builder.Services.AddScoped<PartsService>();
 builder.Services.AddScoped<InstrumentsService>();
+builder.Services.AddScoped<AuthenticationService>();
 
 var app = builder.Build();
 

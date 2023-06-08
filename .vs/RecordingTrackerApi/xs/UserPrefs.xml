@@ -1,0 +1,19 @@
+﻿<Properties StartupConfiguration="{6114723C-BA33-418C-99D1-8F6A61472A8D}|https">
+  <MonoDevelop.Ide.Workbench>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="RecordingTrackerApi" expanded="True">
+            <Node name="RecordingTrackerApi" selected="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints />
+  <MonoDevelop.Ide.ItemProperties.RecordingTrackerApi PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.RecordingTrackerApiTests PreferredExecutionTarget="MonoDevelop.Default" />
+</Properties>
