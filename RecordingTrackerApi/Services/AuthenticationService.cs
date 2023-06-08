@@ -34,7 +34,7 @@ namespace RecordingTrackerApi.Services
             _tokenValidationParameters = tokenValidationParameters;
         }
 
-        public async Task<AuthResultVM> LoginUser(LoginVM loginVM)
+        public async Task<AuthResultVM?> LoginUser(LoginVM loginVM)
         {
             var userExists = await _userManager.FindByEmailAsync(loginVM.EmailAddress);
             if (userExists != null && await _userManager.CheckPasswordAsync(userExists, loginVM.Password))
@@ -46,9 +46,9 @@ namespace RecordingTrackerApi.Services
             return null;
         }
 
-        public Task<AuthResultVM> RefreshToken(TokenRequestVM tokenRequestVM)
+        public async Task<AuthResultVM> RefreshToken(TokenRequestVM tokenRequestVM)
         {
-            throw new NotImplementedException();
+            return await VerifyAndGenerateToken(tokenRequestVM);
         }
 
         public async Task<IdentityResult> RegisterUser(RegisterVM registerVM)

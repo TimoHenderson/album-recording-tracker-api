@@ -60,17 +60,17 @@ namespace RecordingTrackerApi.Controllers
             return Unauthorized();
         }
 
-        //[HttpPost("refresh-token")]
-        //public async Task<IActionResult> RefreshToken([FromBody] TokenRequestVM tokenRequestVM)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest("Please provide all the required fields");
-        //    }
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken([FromBody] TokenRequestVM tokenRequestVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Please provide all the required fields");
+            }
 
-        //    var result = await VerifyAndGenerateToken(tokenRequestVM);
-        //    return Ok(result);
-        //}
+            var result = await _service.RefreshToken(tokenRequestVM);
+            return Ok(result);
+        }
 
 
     }
