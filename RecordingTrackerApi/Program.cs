@@ -2,7 +2,7 @@ using RecordingTrackerApi.Data;
 using RecordingTrackerApi.Services;
 using Microsoft.EntityFrameworkCore;
 using RecordingTrackerApi.Controllers;
-using RecordingTrackerApi.Models;
+using RecordingTrackerApi.Models.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;

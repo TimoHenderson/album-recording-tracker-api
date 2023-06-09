@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using RecordingTrackerApi.Models;
+using RecordingTrackerApi.Models.RecordingEntities;
 
 namespace RecordingTrackerApi.Data;
 

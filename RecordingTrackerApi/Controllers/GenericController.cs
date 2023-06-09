@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RecordingTrackerApi.Models;
+using RecordingTrackerApi.Models.RecordingEntities.DTOs;
+using RecordingTrackerApi.Models.RecordingEntities;
 using RecordingTrackerApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
@@ -11,20 +11,22 @@ namespace RecordingTrackerApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
-    public abstract class GenericController<TEntity> : ControllerBase
+    // [Authorize]
+    public abstract class GenericController<TEntity, TEntityDTO> : ControllerBase
         where TEntity : IEntityBase
-    {
-        protected readonly IEntityService<TEntity> _service;
+        where TEntityDTO : IEntityBaseDTO
 
-        protected GenericController(IEntityService<TEntity> service)
+    {
+        protected readonly IEntityService<TEntity, TEntityDTO> _service;
+
+        protected GenericController(IEntityService<TEntity, TEntityDTO> service)
         {
             _service = service;
         }
 
         [EnableCors]
         [HttpGet]
-        public virtual async Task<ActionResult<IEnumerable<TEntity>>> GetAll()
+        public virtual async Task<ActionResult<IEnumerable<TEntityDTO>>> GetAll()
         {
             var entities = await _service.GetAll(UserId);
             if (entities == null)
@@ -35,7 +37,7 @@ namespace RecordingTrackerApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TEntity>>? Get(int id)
+        public async Task<ActionResult<TEntityDTO>>? Get(int id)
         {
             var entity = await _service.Get(UserId, id);
 
@@ -48,7 +50,7 @@ namespace RecordingTrackerApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<TEntity>> Post(TEntity entity)
+        public async Task<ActionResult<TEntityDTO>> Post(TEntityDTO entity)
         {
             var savedEntity = await _service.Create(UserId, entity);
             if (savedEntity == null)
@@ -61,7 +63,7 @@ namespace RecordingTrackerApi.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, TEntity entity)
+        public async Task<IActionResult> Put(int id, TEntityDTO entity)
         {
             var updatedEntity = await _service.Update(UserId, entity);
             if (updatedEntity == null) return BadRequest();
@@ -76,7 +78,8 @@ namespace RecordingTrackerApi.Controllers
             return Ok(deletedEntity);
         }
 
-        private string UserId => HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        // private string UserId => HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        private string UserId => "1";
 
     }
 }

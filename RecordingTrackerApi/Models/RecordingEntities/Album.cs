@@ -2,20 +2,18 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace RecordingTrackerApi.Models;
+namespace RecordingTrackerApi.Models.RecordingEntities;
 
-public class Song : TreeNode
+public class Album : TreeNode
 {
+
     private int parentNum;
 
-    [NotMapped]
-    public override string Type => "Song";
+    //[JsonIgnore]
+    public Artist? Parent { get; set; } = null;
 
     [NotMapped]
-    public override string ChildType => "Part";
-
-    [JsonIgnore]
-    public Album? Parent { get; set; } = null;
+    public string? ParentType => Parent != null ? Parent.Type : null;
 
     [NotMapped]
     public int ParentNum
@@ -25,14 +23,16 @@ public class Song : TreeNode
     }
 
     [NotMapped]
-    public string? ParentType => Parent != null ? Parent.Type : null;
+    public override string Type => "Album";
+
+    [NotMapped]
+    public override string ChildType => "Song";
 
     [JsonIgnore]
-    public ICollection<Part> Children { get; set; } = new List<Part>();
+    public ICollection<Song> Children { get; set; } = new List<Song>();
 
     [NotMapped]
     public ICollection<int> ChildrenIds => Children.Select(a => a.Id).ToList();
-
 
     [NotMapped]
     public override int? CalculatedCompletion { get => Children.Count > 0 ? Children.Sum(a => a.CalculatedCompletion) / Children.Count : null; }

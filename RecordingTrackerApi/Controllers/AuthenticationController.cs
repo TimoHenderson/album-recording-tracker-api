@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using RecordingTrackerApi.Models;
 using RecordingTrackerApi.Data;
-using RecordingTrackerApi.Models.ViewModels;
+using RecordingTrackerApi.Models.Users.DTOs;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
@@ -29,30 +29,30 @@ namespace RecordingTrackerApi.Controllers
         }
 
         [HttpPost("register-user")]
-        public async Task<IActionResult> Register([FromBody] RegisterVM registerVM)
+        public async Task<IActionResult> Register([FromBody] RegisterDTO registerDTO)
         {
             if (!ModelState.IsValid)
                 return BadRequest("Please provide all the required fields");
 
 
-            if (await _service.IsEmailAlreadyRegistered(registerVM.EmailAddress))
+            if (await _service.IsEmailAlreadyRegistered(registerDTO.EmailAddress))
                 return BadRequest("Email address is already registered!");
 
-            var result = await _service.RegisterUser(registerVM);
+            var result = await _service.RegisterUser(registerDTO);
 
             if (result.Succeeded) return Ok(result);
             return BadRequest(result.ToString());
         }
 
         [HttpPost("login-user")]
-        public async Task<IActionResult> Login([FromBody] LoginVM loginVM)
+        public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("Please provide all the required fields");
             }
 
-            var loginResult = await _service.LoginUser(loginVM);
+            var loginResult = await _service.LoginUser(loginDTO);
 
             if (loginResult != null)
                 return Ok(loginResult);
@@ -61,14 +61,14 @@ namespace RecordingTrackerApi.Controllers
         }
 
         [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken([FromBody] TokenRequestVM tokenRequestVM)
+        public async Task<IActionResult> RefreshToken([FromBody] TokenRequestDTO tokenRequestDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("Please provide all the required fields");
             }
 
-            var result = await _service.RefreshToken(tokenRequestVM);
+            var result = await _service.RefreshToken(tokenRequestDTO);
             return Ok(result);
         }
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using RecordingTrackerApi.Models;
+using RecordingTrackerApi.Models.Users;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

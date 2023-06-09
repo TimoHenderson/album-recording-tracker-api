@@ -1,20 +1,21 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using RecordingTrackerApi.Models;
+﻿using RecordingTrackerApi.Models.RecordingEntities;
+using RecordingTrackerApi.Models.RecordingEntities.DTOs;
 
 namespace RecordingTrackerApi.Services
 {
-    public interface IEntityService<T> where T : IEntityBase
+    public interface IEntityService<TEntity, TEntityDTO>
+        where TEntity : IEntityBase
+        where TEntityDTO : IEntityBaseDTO
     {
-        public Task<IEnumerable<T>> GetAll(string userId);
+        public Task<IEnumerable<TEntityDTO>> GetAll(string userId);
 
-        public Task<T?> Get(string userId, int id);
+        public Task<TEntityDTO?> Get(string userId, int id);
 
-        public Task<T?> Create(string userId, T entity);
+        public Task<TEntityDTO?> Create(string userId, TEntityDTO entity);
 
-        public Task<T?> Delete(string userId, int id);
+        public Task<TEntityDTO?> Delete(string userId, int id);
 
-        public Task<T?> Update(string userId, T entity);
+        public Task<TEntityDTO?> Update(string userId, TEntityDTO entity);
 
     }
 }

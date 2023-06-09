@@ -31,6 +31,7 @@
     <None Remove="Data\Helpers\" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Models/Authentication/" />
     <Folder Include="Models\ViewModels\" />
     <Folder Include="Data\Helpers\" />
   </ItemGroup>

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace RecordingTrackerApi.Models.ViewModels
+namespace RecordingTrackerApi.Models.Users.DTOs
 {
-    public class TokenRequestVM
+    public class TokenRequestDTO
     {
         [Required]
         public string Token { get; set; }

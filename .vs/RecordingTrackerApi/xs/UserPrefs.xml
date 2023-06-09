@@ -1,16 +1,51 @@
 ﻿<Properties StartupConfiguration="{6114723C-BA33-418C-99D1-8F6A61472A8D}|https" GitUserInfo="UsingMD">
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="RecordingTrackerApi/Models/Album.cs">
+    <Files>
+      <File FileName="RecordingTrackerApi/Services/IAuthenticationService.cs" Line="12" Column="59" />
+      <File FileName="RecordingTrackerApi/Data/Extensions.cs" Line="22" Column="2" />
+      <File FileName="RecordingTrackerApi/Services/AuthenticationService.cs" Line="49" Column="84" />
+      <File FileName="RecordingTrackerApi/Models/IEntityBase.cs" Line="8" Column="48" />
+      <File FileName="RecordingTrackerApi/Models/Album.cs" Line="34" Column="16" />
+      <File FileName="RecordingTrackerApi/Models/GenericEntity.cs" Line="19" Column="2" />
+      <File FileName="RecordingTrackerApi/Models/ApplicationUser.cs" Line="1" Column="1" />
+      <File FileName="RecordingTrackerApi/Models/Artist.cs" Line="1" Column="1" />
+      <File FileName="RecordingTrackerApi/Controllers/AuthenticationController.cs" Line="71" Column="70" NotebookId="1" />
+      <File FileName="RecordingTrackerApi/Program.cs" Line="83" Column="53" NotebookId="1" />
+      <File FileName="RecordingTrackerApi/.gitignore" Line="1" Column="1" NotebookId="1" />
+      <File FileName="RecordingTrackerApi/Controllers/GenericController.cs" Line="74" Column="63" NotebookId="1" />
+      <File FileName="RecordingTrackerApi/Controllers/ArtistsController.cs" Line="5" Column="1" NotebookId="1" />
+      <File FileName="RecordingTrackerApi/Controllers/InstrumentsController.cs" Line="11" Column="1" NotebookId="1" />
+      <File FileName="RecordingTrackerApi/Services/IEntityService.cs" Line="17" Column="55" NotebookId="1" />
+      <File FileName="RecordingTrackerApi/Services/GenericEntityService.cs" Line="51" Column="59" NotebookId="1" />
+      <File FileName="RecordingTrackerApi/Services/ArtistsService.cs" Line="27" Column="28" NotebookId="1" />
+      <File FileName="RecordingTrackerApi/Services/SongsService.cs" Line="48" Column="2" NotebookId="1" />
+      <File FileName="RecordingTrackerApi/Services/PartsService.cs" Line="53" Column="42" NotebookId="1" />
+      <File FileName="RecordingTrackerApi/Services/InstrumentsService.cs" Line="1" Column="1" NotebookId="1" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="RecordingTrackerApi" expanded="True">
-            <Node name="RecordingTrackerApi" selected="True" />
+            <Node name="RecordingTrackerApi" expanded="True">
+              <Node name="Controllers" expanded="True" />
+              <Node name="Models" expanded="True">
+                <Node name="Album.cs" selected="True" />
+              </Node>
+            </Node>
+            <Node name="RecordingTrackerApiTests" expanded="True" />
           </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.UnitTesting.TestPad">
+        <State name="__root__">
+          <Node name="RecordingTrackerApi" expanded="True" selected="True" />
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.Breakpoints />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.ItemProperties.RecordingTrackerApi PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

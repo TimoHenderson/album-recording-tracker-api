@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "NW75wRptwXvjXYWcj9ziPPqmmXRHmCMR9KYpGArk21vlX0tjhgBwW0a2XlsT2g+6Q491u3LzF6NchijoRYBh+A==",
+  "dgSpecHash": "epD5dLVE6n5cmLhaXqJAsBfnccEEQR/dnXo7urwllUCacgDhmUvNz+jlvEfPRp+J1ztM3L31btYfxrVs4pZFMA==",
   "success": true,
-  "projectFilePath": "/Users/timo/codeclan_work/projects/album_recording_tracker_cs_react/RecordingTrackerApiTests/RecordingTrackerApiTests.csproj",
+  "projectFilePath": "/Users/timo/codeclan_work/projects/album-recording-tracker/album-recording-tracker-api/RecordingTrackerApiTests/RecordingTrackerApiTests.csproj",
   "expectedPackageFiles": [
     "/Users/timo/.nuget/packages/coverlet.collector/3.2.0/coverlet.collector.3.2.0.nupkg.sha512",
     "/Users/timo/.nuget/packages/microsoft.codecoverage/17.5.0/microsoft.codecoverage.17.5.0.nupkg.sha512",

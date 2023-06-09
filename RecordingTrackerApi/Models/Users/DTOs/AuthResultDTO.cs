@@ -1,7 +1,7 @@
 ﻿using System;
-namespace RecordingTrackerApi.Models.ViewModels
+namespace RecordingTrackerApi.Models.Users.DTOs
 {
-    public class AuthResultVM
+    public class AuthResultDTO
     {
         public string Token { get; set; }
         public string RefreshToken { get; set; }

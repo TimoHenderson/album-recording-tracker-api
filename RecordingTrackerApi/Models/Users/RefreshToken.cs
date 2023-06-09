@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RecordingTrackerApi.Models
+namespace RecordingTrackerApi.Models.Users
 {
     public class RefreshToken
     {

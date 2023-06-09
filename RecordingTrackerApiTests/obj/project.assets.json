@@ -5522,11 +5522,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/timo/codeclan_work/projects/album_recording_tracker_cs_react/RecordingTrackerApiTests/RecordingTrackerApiTests.csproj",
+      "projectUniqueName": "/Users/timo/codeclan_work/projects/album-recording-tracker/album-recording-tracker-api/RecordingTrackerApiTests/RecordingTrackerApiTests.csproj",
       "projectName": "RecordingTrackerApiTests",
-      "projectPath": "/Users/timo/codeclan_work/projects/album_recording_tracker_cs_react/RecordingTrackerApiTests/RecordingTrackerApiTests.csproj",
+      "projectPath": "/Users/timo/codeclan_work/projects/album-recording-tracker/album-recording-tracker-api/RecordingTrackerApiTests/RecordingTrackerApiTests.csproj",
       "packagesPath": "/Users/timo/.nuget/packages/",
-      "outputPath": "/Users/timo/codeclan_work/projects/album_recording_tracker_cs_react/RecordingTrackerApiTests/obj/",
+      "outputPath": "/Users/timo/codeclan_work/projects/album-recording-tracker/album-recording-tracker-api/RecordingTrackerApiTests/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/timo/.nuget/NuGet/NuGet.Config"

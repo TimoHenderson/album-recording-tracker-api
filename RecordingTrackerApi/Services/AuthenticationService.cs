@@ -7,8 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RecordingTrackerApi.Data;
 using RecordingTrackerApi.Data.Helpers;
-using RecordingTrackerApi.Models;
-using RecordingTrackerApi.Models.ViewModels;
+using RecordingTrackerApi.Models.Users;
+using RecordingTrackerApi.Models.Users.DTOs;
 
 namespace RecordingTrackerApi.Services
 {
@@ -34,10 +34,10 @@ namespace RecordingTrackerApi.Services
             _tokenValidationParameters = tokenValidationParameters;
         }
 
-        public async Task<AuthResultVM?> LoginUser(LoginVM loginVM)
+        public async Task<AuthResultDTO?> LoginUser(LoginDTO loginDTO)
         {
-            var userExists = await _userManager.FindByEmailAsync(loginVM.EmailAddress);
-            if (userExists != null && await _userManager.CheckPasswordAsync(userExists, loginVM.Password))
+            var userExists = await _userManager.FindByEmailAsync(loginDTO.EmailAddress);
+            if (userExists != null && await _userManager.CheckPasswordAsync(userExists, loginDTO.Password))
             {
                 var tokenValue = await GenerateJWTTokenAsync(userExists, null);
 
@@ -46,29 +46,29 @@ namespace RecordingTrackerApi.Services
             return null;
         }
 
-        public async Task<AuthResultVM> RefreshToken(TokenRequestVM tokenRequestVM)
+        public async Task<AuthResultDTO> RefreshToken(TokenRequestDTO tokenRequestDTO)
         {
-            return await VerifyAndGenerateToken(tokenRequestVM);
+            return await VerifyAndGenerateToken(tokenRequestDTO);
         }
 
-        public async Task<IdentityResult> RegisterUser(RegisterVM registerVM)
+        public async Task<IdentityResult> RegisterUser(RegisterDTO registerDTO)
         {
             ApplicationUser newUser = new ApplicationUser()
             {
-                FirstName = registerVM.FirstName,
-                LastName = registerVM.LastName,
-                Email = registerVM.EmailAddress,
-                UserName = registerVM.UserName,
+                FirstName = registerDTO.FirstName,
+                LastName = registerDTO.LastName,
+                Email = registerDTO.EmailAddress,
+                UserName = registerDTO.UserName,
                 Custom = "Egg",
 
                 SecurityStamp = Guid.NewGuid().ToString()
             };
 
-            var result = await _userManager.CreateAsync(newUser, registerVM.Password);
+            var result = await _userManager.CreateAsync(newUser, registerDTO.Password);
 
             if (result.Succeeded)
             {
-                switch (registerVM.Role)
+                switch (registerDTO.Role)
                 {
                     case UserRoles.Engineer:
                         await _userManager.AddToRoleAsync(newUser, UserRoles.Engineer);
@@ -85,15 +85,15 @@ namespace RecordingTrackerApi.Services
         }
 
 
-        private async Task<AuthResultVM> VerifyAndGenerateToken(TokenRequestVM tokenRequestVM)
+        private async Task<AuthResultDTO> VerifyAndGenerateToken(TokenRequestDTO tokenRequestDTO)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
             var storedToken = await _context.RefreshTokens.FirstOrDefaultAsync(x => x.Token ==
-                tokenRequestVM.RefreshToken);
+                tokenRequestDTO.RefreshToken);
             var dbUser = await _userManager.FindByIdAsync(storedToken.UserId);
             try
             {
-                var tokenCheckResult = jwtTokenHandler.ValidateToken(tokenRequestVM.Token,
+                var tokenCheckResult = jwtTokenHandler.ValidateToken(tokenRequestDTO.Token,
                     _tokenValidationParameters, out var validatedToken);
 
                 return await GenerateJWTTokenAsync(dbUser, storedToken);
@@ -111,7 +111,7 @@ namespace RecordingTrackerApi.Services
             }
         }
 
-        private async Task<AuthResultVM> GenerateJWTTokenAsync(ApplicationUser user, RefreshToken rToken)
+        private async Task<AuthResultDTO> GenerateJWTTokenAsync(ApplicationUser user, RefreshToken rToken)
         {
             var authClaims = new List<Claim>()
             {
@@ -142,7 +142,7 @@ namespace RecordingTrackerApi.Services
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
             if (rToken != null)
             {
-                var rTokenResponse = new AuthResultVM()
+                var rTokenResponse = new AuthResultDTO()
                 {
                     Token = jwtToken,
                     RefreshToken = rToken.Token,
@@ -165,7 +165,7 @@ namespace RecordingTrackerApi.Services
             await _context.SaveChangesAsync();
 
 
-            var response = new AuthResultVM()
+            var response = new AuthResultDTO()
             {
                 Token = jwtToken,
                 RefreshToken = refreshToken.Token,

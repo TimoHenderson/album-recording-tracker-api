@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-namespace RecordingTrackerApi.Models.ViewModels
+namespace RecordingTrackerApi.Models.Users.DTOs
 {
-    public class LoginVM
+    public class LoginDTO
     {
 
         [Required]

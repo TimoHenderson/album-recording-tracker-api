@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-namespace RecordingTrackerApi.Models.ViewModels
+namespace RecordingTrackerApi.Models.Users.DTOs
 {
-    public class RegisterVM
+    public class RegisterDTO
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Identity;
-namespace RecordingTrackerApi.Models
+namespace RecordingTrackerApi.Models.Users
 {
     public class ApplicationUser : IdentityUser
     {
