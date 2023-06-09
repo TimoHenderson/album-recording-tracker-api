@@ -1,5 +1,6 @@
 ﻿
 using System.Linq.Expressions;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using RecordingTrackerApi.Data;
 using RecordingTrackerApi.Models.RecordingEntities;
@@ -15,6 +16,14 @@ public class InstrumentsService : GenericEntityService<Instrument, InstrumentDTO
         Id = s.Id,
         Name = s.Name,
     };
-    public InstrumentsService(RecordingContext context) : base(context, _projectionCriteria) { }
+
+    private static readonly MapperConfiguration _mapperConfiguration = new(cfg =>
+        {
+            cfg.CreateMap<InstrumentDTO, Instrument>();
+            cfg.CreateMap<Instrument, InstrumentDTO>();
+        });
+
+    public InstrumentsService(RecordingContext context) : base(context, _projectionCriteria, _mapperConfiguration) { }
+
 
 }

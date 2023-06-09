@@ -1,5 +1,7 @@
 ﻿
 using System.Linq.Expressions;
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.EntityFrameworkCore;
 using RecordingTrackerApi.Data;
 using RecordingTrackerApi.Models.RecordingEntities;
@@ -19,8 +21,35 @@ public class PartsService : GenericEntityService<Part, PartDTO>
         Completion = s.Completion,
     };
 
-    public PartsService(RecordingContext context) : base(context, _projectionCriteria) { }
+    private static readonly MapperConfiguration _mapperConfiguration = new(cfg =>
+    {
+        cfg.CreateMap<PartDTO, Part>()
+            .ForMember(dest => dest.Parent, opt =>
+            opt.MapFrom(src => new Song { Id = src.ParentId }))
+            .ForMember(dest => dest.Instrument, opt =>
+            opt.MapFrom(src => new Instrument { Id = src.InstrumentId }));
 
+        cfg.CreateMap<Part, PartDTO>()
+            .ForMember(dest => dest.ParentId, opt =>
+            opt.MapFrom(src => src.Parent.Id))
+             .ForMember(dest => dest.InstrumentId, opt =>
+            opt.MapFrom(src => src.Instrument.Id));
+    });
+
+    public PartsService(RecordingContext context) : base(context, _projectionCriteria, _mapperConfiguration) { }
+
+    public override async Task<bool> ValidateRelationshipsAndAttach(Part entity)
+    {
+        var song = await _context.Songs.FindAsync(entity.Parent.Id);
+        if (song == null) return false;
+        else entity.Parent = song;
+
+        var instrument = await _context.Instruments.FindAsync(entity.Instrument.Id);
+        if (instrument == null) return false;
+        else entity.Instrument = instrument;
+        return true;
+
+    }
 
     // public override async Task<IEnumerable<Part>> GetAll(string userId)
     // {

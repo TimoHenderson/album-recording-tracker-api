@@ -3,6 +3,7 @@ using RecordingTrackerApi.Data;
 using Microsoft.EntityFrameworkCore;
 using RecordingTrackerApi.Models.RecordingEntities.DTOs;
 using System.Linq.Expressions;
+using AutoMapper;
 
 namespace RecordingTrackerApi.Services;
 
@@ -14,7 +15,14 @@ public class ArtistsService : GenericEntityService<Artist, ArtistDTO>
         Id = s.Id,
         Name = s.Name,
     };
-    public ArtistsService(RecordingContext context) : base(context, _projectionCriteria) { }
+
+    private static readonly MapperConfiguration _mapperConfiguration = new(cfg =>
+    {
+        cfg.CreateMap<ArtistDTO, Artist>();
+        cfg.CreateMap<Artist, ArtistDTO>();
+    });
+
+    public ArtistsService(RecordingContext context) : base(context, _projectionCriteria, _mapperConfiguration) { }
 
     // public override async Task<IEnumerable<Artist>> GetAll(string UserId)
     // {

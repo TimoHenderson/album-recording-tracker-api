@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using RecordingTrackerApi.Data;
 using RecordingTrackerApi.Models.RecordingEntities;
 using RecordingTrackerApi.Models.RecordingEntities.DTOs;
+using AutoMapper;
 
 namespace RecordingTrackerApi.Services
 {
@@ -16,15 +16,17 @@ namespace RecordingTrackerApi.Services
         protected readonly RecordingContext _context;
         protected DbSet<TEntity> _dbSet;
         private readonly Expression<Func<TEntity, TEntityDTO>> _projectionCriteria;
+        private readonly IMapper _mapper;
 
-        public GenericEntityService(RecordingContext context, Expression<Func<TEntity, TEntityDTO>> projectionCriteria)
+        public GenericEntityService(RecordingContext context,
+            Expression<Func<TEntity, TEntityDTO>> projectionCriteria,
+            MapperConfiguration mapperConfiguration)
         {
             _context = context;
             _dbSet = _context.Set<TEntity>();
             _projectionCriteria = projectionCriteria;
+            _mapper = mapperConfiguration.CreateMapper();
         }
-
-
 
         public virtual async Task<IEnumerable<TEntityDTO>> GetAll(string userId)
         {
@@ -43,15 +45,16 @@ namespace RecordingTrackerApi.Services
         }
 
 
-        public virtual async Task<TEntityDTO?> Create(string userId, TEntityDTO entity)
+        public virtual async Task<TEntityDTO?> Create(string userId, TEntityDTO entityDTO)
         {
-            throw new NotImplementedException();
-            // _dbSet.Add(entity);
-            // await _context.SaveChangesAsync();
-            // return entity;
+            var entity = _mapper.Map<TEntity>(entityDTO);
+            if (!await ValidateRelationshipsAndAttach(entity)) return default;
+            _dbSet.Add(entity);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<TEntityDTO>(entity);
         }
 
-        public virtual async Task<TEntityDTO?> Update(string userId, TEntityDTO entity)
+        public virtual async Task<TEntityDTO?> Update(string userId, TEntityDTO entityDTO)
         {
             throw new NotImplementedException();
             // var updatedEntity = _context.Update(entity).Entity;
@@ -70,50 +73,8 @@ namespace RecordingTrackerApi.Services
             // return entity;
         }
 
-        private static TEntityDTO CreateDtoFromEntity(TEntity entity)
-        {
-            var dto = new TEntityDTO();
-            PropertyInfo[] dtoProperties = typeof(TEntityDTO).GetProperties();
-            PropertyInfo[] entityProperties = typeof(TEntity).GetProperties();
+        public virtual Task<bool> ValidateRelationshipsAndAttach(TEntity entity) => Task.FromResult(true);
 
-            foreach (PropertyInfo dtoProperty in dtoProperties)
-            {
-
-                if (dtoProperty.Name == "ParentId")
-                {
-                    PropertyInfo? parentProperty = entityProperties.FirstOrDefault(p => p.Name == "Parent");
-                    if (parentProperty != null)
-                    {
-                        object parentValue = parentProperty.GetValue(entity);
-                        if (parentValue != null)
-                        {
-                            PropertyInfo parentIdProperty = parentProperty.PropertyType.GetProperty("Id");
-                            if (parentIdProperty != null)
-                            {
-                                object parentIdValue = parentIdProperty.GetValue(parentValue);
-                                dtoProperty.SetValue(dto, parentIdValue);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    PropertyInfo correspondingEntityProperty = entityProperties.FirstOrDefault(p => p.Name == dtoProperty.Name);
-                    if (correspondingEntityProperty != null)
-                    {
-                        object value = correspondingEntityProperty.GetValue(entity);
-                        if (dtoProperty.SetMethod != null)
-                        {
-                            dtoProperty.SetValue(dto, value);
-                        }
-                    }
-                }
-            }
-
-            return dto;
-
-
-        }
     }
 }
 

@@ -58,7 +58,7 @@ namespace RecordingTrackerApi.Controllers
                 return Problem("Error - not created");
             }
 
-            return CreatedAtAction("Get", new { id = savedEntity.Id }, entity);
+            return CreatedAtAction("Get", new { id = savedEntity.Id }, savedEntity);
         }
 
 
