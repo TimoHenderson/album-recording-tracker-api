@@ -59,10 +59,16 @@ namespace RecordingTrackerApi.Services
 
         public virtual async Task<TEntityDTO?> Update(string userId, TEntityDTO entityDTO)
         {
-            throw new NotImplementedException();
-            // var updatedEntity = _context.Update(entity).Entity;
-            // await _context.SaveChangesAsync();
-            // return await Get(userId, updatedEntity.Id);
+            var storedEntity = await _dbSet.FirstOrDefaultAsync(
+                e => e.Id == entityDTO.Id &&
+                e.AspNetUserId == userId);
+
+            if (storedEntity == null) return default;
+
+            _mapper.Map(entityDTO, storedEntity);
+            var updatedEntity = _context.Update(storedEntity).Entity;
+            await _context.SaveChangesAsync();
+            return _mapper.Map<TEntityDTO>(updatedEntity);
         }
 
 

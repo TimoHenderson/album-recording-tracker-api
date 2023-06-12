@@ -10,9 +10,9 @@ public class RecordingContext : DbContext
     {
     }
 
-    public DbSet<Artist> Artists => Set<Artist>();
-    public DbSet<Album> Albums => Set<Album>();
-    public DbSet<Song> Songs => Set<Song>();
-    public DbSet<Part> Parts => Set<Part>();
-    public DbSet<Instrument> Instruments => Set<Instrument>();
+    public virtual DbSet<Artist> Artists => Set<Artist>();
+    public virtual DbSet<Album> Albums => Set<Album>();
+    public virtual DbSet<Song> Songs => Set<Song>();
+    public virtual DbSet<Part> Parts => Set<Part>();
+    public virtual DbSet<Instrument> Instruments => Set<Instrument>();
 }
