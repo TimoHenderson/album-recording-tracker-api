@@ -7,18 +7,6 @@ namespace RecordingTrackerApi.Models.RecordingEntities;
 
 public class Artist : TreeNode
 {
-    [NotMapped]
-    public override string Type => "Artist";
+    public ICollection<Album> Albums { get; set; } = new List<Album>();
 
-    [NotMapped]
-    public override string ChildType => "Album";
-
-    [JsonIgnore]
-    public ICollection<Album> Children { get; set; } = new List<Album>();
-
-    [NotMapped]
-    public ICollection<int> ChildrenIds => Children.Select(a => a.Id).ToList();
-
-    [NotMapped]
-    public override int? CalculatedCompletion { get => Children.Count > 0 ? Children.Sum(a => a.CalculatedCompletion) / Children.Count : null; }
 }

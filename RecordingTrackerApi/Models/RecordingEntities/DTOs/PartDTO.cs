@@ -7,7 +7,7 @@ public class PartDTO : GenericEntityDTO
     public int ParentId { get; set; }
     [Required]
     public int InstrumentId { get; set; }
-    public override string Type => "Part";
+
     [Required]
     public int Completion { get; set; } = 0;
 }

@@ -40,7 +40,7 @@ public class PartsService : GenericEntityService<Part, PartDTO>
 
     public override async Task<bool> ValidateRelationshipsAndAttach(Part entity)
     {
-        var song = await _context.Songs.FindAsync(entity.Parent.Id);
+        y
         if (song == null) return false;
         else entity.Parent = song;
 

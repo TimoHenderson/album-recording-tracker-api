@@ -6,6 +6,6 @@ public abstract class GenericEntityDTO : IEntityBaseDTO
     public int Id { get; set; }
     [Required]
     [MaxLength(100)]
-    public string? Name { get; set; }
-    public abstract string Type { get; }
+    public string Name { get; set; } = null!;
+    public string Type { get; } = null!;
 }
