@@ -33,6 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models/Authentication/" />
+    <Folder Include="Models/RecordingEntities/AbstractClasses/" />
     <Folder Include="Models\ViewModels\" />
     <Folder Include="Data\Helpers\" />
   </ItemGroup>

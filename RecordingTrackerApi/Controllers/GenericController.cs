@@ -78,8 +78,8 @@ namespace RecordingTrackerApi.Controllers
             return Ok(deletedEntity);
         }
 
-        // private string UserId => HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        private string UserId => "1";
+        private string UserId => HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        // private string UserId => "1";
 
     }
 }

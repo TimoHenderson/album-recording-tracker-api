@@ -5,6 +5,7 @@ using RecordingTrackerApi.Data;
 using RecordingTrackerApi.Models.RecordingEntities;
 using RecordingTrackerApi.Models.RecordingEntities.DTOs;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace RecordingTrackerApi.Services
 {
@@ -15,23 +16,25 @@ namespace RecordingTrackerApi.Services
     {
         protected readonly RecordingContext _context;
         protected DbSet<TEntity> _dbSet;
-        private readonly Expression<Func<TEntity, TEntityDTO>> _projectionCriteria;
         private readonly IMapper _mapper;
 
-        public GenericEntityService(RecordingContext context,
-            Expression<Func<TEntity, TEntityDTO>> projectionCriteria,
-            MapperConfiguration mapperConfiguration)
+        public GenericEntityService(RecordingContext context)
         {
             _context = context;
             _dbSet = _context.Set<TEntity>();
-            _projectionCriteria = projectionCriteria;
-            _mapper = mapperConfiguration.CreateMapper();
+            var mapperConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<TEntityDTO, TEntity>();
+                cfg.CreateMap<TEntity, TEntityDTO>();
+            });
+            _mapper = mapperConfig.CreateMapper();
         }
 
         public virtual async Task<IEnumerable<TEntityDTO>> GetAll(string userId)
         {
             return await _dbSet
-                .Select(_projectionCriteria)
+            .Where(e => e.AspNetUserId == userId)
+                .ProjectTo<TEntityDTO>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
         }
@@ -40,7 +43,7 @@ namespace RecordingTrackerApi.Services
         {
             return await _dbSet
                 .Where(e => e.Id == id)
-                .Select(_projectionCriteria)
+                .ProjectTo<TEntityDTO>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
         }
 

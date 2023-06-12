@@ -10,11 +10,14 @@ public abstract class GenericEntity : IEntityBase
     [Required]
     public int Id { get; set; }
 
-    [Required]
     [MaxLength(100)]
-    public string? Name { get; set; }
+    [Required]
+    public string Name { get; set; }
 
-    // [JsonIgnore]
-    // public ApplicationUser User { get; set; }
+    public string? AspNetUserId { get; set; }
+
+    public bool Starred { get; set; } = false;
+
+    public string Notes { get; set; } = "";
 
 }

@@ -11,45 +11,46 @@ namespace RecordingTrackerApi.Services;
 
 public class PartsService : GenericEntityService<Part, PartDTO>
 {
-    private static readonly Expression<Func<Part, PartDTO>> _projectionCriteria
-    = s => new PartDTO
-    {
-        Id = s.Id,
-        Name = s.Name,
-        ParentId = s.Parent.Id,
-        InstrumentId = s.Instrument.Id,
-        Completion = s.Completion,
-    };
+    // private static readonly Expression<Func<Part, PartDTO>> _projectionCriteria
+    // = s => new PartDTO
+    // {
+    //     Id = s.Id,
+    //     Name = s.Name,
+    //     ParentId = s.Parent.Id,
+    //     InstrumentId = s.Instrument.Id,
+    //     Completion = s.Completion,
+    // };
 
-    private static readonly MapperConfiguration _mapperConfiguration = new(cfg =>
-    {
-        cfg.CreateMap<PartDTO, Part>()
-            .ForMember(dest => dest.Parent, opt =>
-            opt.MapFrom(src => new Song { Id = src.ParentId }))
-            .ForMember(dest => dest.Instrument, opt =>
-            opt.MapFrom(src => new Instrument { Id = src.InstrumentId }));
+    // private static readonly MapperConfiguration _mapperConfiguration = new(cfg =>
+    // {
+    //     cfg.CreateMap<PartDTO, Part>()
+    //         .ForMember(dest => dest.Parent, opt =>
+    //         opt.MapFrom(src => new Song { Id = src.ParentId }))
+    //         .ForMember(dest => dest.Instrument, opt =>
+    //         opt.MapFrom(src => new Instrument { Id = src.InstrumentId }));
 
-        cfg.CreateMap<Part, PartDTO>()
-            .ForMember(dest => dest.ParentId, opt =>
-            opt.MapFrom(src => src.Parent.Id))
-             .ForMember(dest => dest.InstrumentId, opt =>
-            opt.MapFrom(src => src.Instrument.Id));
-    });
+    //     cfg.CreateMap<Part, PartDTO>()
+    //         .ForMember(dest => dest.ParentId, opt =>
+    //         opt.MapFrom(src => src.Parent.Id))
+    //          .ForMember(dest => dest.InstrumentId, opt =>
+    //         opt.MapFrom(src => src.Instrument.Id));
+    // });
 
-    public PartsService(RecordingContext context) : base(context, _projectionCriteria, _mapperConfiguration) { }
+    public PartsService(RecordingContext context) : base(context) { }
+    // public PartsService(RecordingContext context) : base(context, _projectionCriteria, _mapperConfiguration) { }
 
-    public override async Task<bool> ValidateRelationshipsAndAttach(Part entity)
-    {
-        var song = await _context.Songs.FindAsync(entity.Parent.Id);
-        if (song == null) return false;
-        else entity.Parent = song;
+    // public override async Task<bool> ValidateRelationshipsAndAttach(Part entity)
+    // {
 
-        var instrument = await _context.Instruments.FindAsync(entity.Instrument.Id);
-        if (instrument == null) return false;
-        else entity.Instrument = instrument;
-        return true;
+    //     if (song == null) return false;
+    //     else entity.Parent = song;
 
-    }
+    //     var instrument = await _context.Instruments.FindAsync(entity.Instrument.Id);
+    //     if (instrument == null) return false;
+    //     else entity.Instrument = instrument;
+    //     return true;
+
+    // }
 
     // public override async Task<IEnumerable<Part>> GetAll(string userId)
     // {
