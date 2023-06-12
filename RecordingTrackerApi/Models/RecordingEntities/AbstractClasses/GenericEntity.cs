@@ -16,4 +16,8 @@ public abstract class GenericEntity : IEntityBase
 
     public string? AspNetUserId { get; set; }
 
+    public bool Starred { get; set; } = false;
+
+    public string Notes { get; set; } = "";
+
 }

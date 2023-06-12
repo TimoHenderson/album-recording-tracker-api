@@ -6,4 +6,6 @@ public class SongDTO : GenericEntityDTO
     [Required]
     public int AlbumId { get; set; }
 
+    public string ChildType => "Part";
+
 }

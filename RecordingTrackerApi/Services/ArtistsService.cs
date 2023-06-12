@@ -9,20 +9,21 @@ namespace RecordingTrackerApi.Services;
 
 public class ArtistsService : GenericEntityService<Artist, ArtistDTO>
 {
-    private static readonly Expression<Func<Artist, ArtistDTO>> _projectionCriteria
-    = s => new ArtistDTO
-    {
-        Id = s.Id,
-        Name = s.Name,
-    };
+    // private static readonly Expression<Func<Artist, ArtistDTO>> _projectionCriteria
+    // = s => new ArtistDTO
+    // {
+    //     Id = s.Id,
+    //     Name = s.Name,
+    // };
 
-    private static readonly MapperConfiguration _mapperConfiguration = new(cfg =>
-    {
-        cfg.CreateMap<ArtistDTO, Artist>();
-        cfg.CreateMap<Artist, ArtistDTO>();
-    });
+    // private static readonly MapperConfiguration _mapperConfiguration = new(cfg =>
+    // {
+    //     cfg.CreateMap<ArtistDTO, Artist>();
+    //     cfg.CreateMap<Artist, ArtistDTO>();
+    // });
 
-    public ArtistsService(RecordingContext context) : base(context, _projectionCriteria, _mapperConfiguration) { }
+    // public ArtistsService(RecordingContext context) : base(context, _projectionCriteria, _mapperConfiguration) { }
+    public ArtistsService(RecordingContext context) : base(context) { }
 
     // public override async Task<IEnumerable<Artist>> GetAll(string UserId)
     // {

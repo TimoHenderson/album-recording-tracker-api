@@ -8,8 +8,4 @@ public abstract class TreeNode : GenericEntity
 {
     public virtual string ChildType { get; } = "None";
 
-    public bool Starred { get; set; } = false;
-
-    public string Notes { get; set; } = "";
-
 }

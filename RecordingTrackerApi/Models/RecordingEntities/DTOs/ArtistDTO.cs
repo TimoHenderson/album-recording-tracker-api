@@ -2,7 +2,7 @@
 
 public class ArtistDTO : GenericEntityDTO
 {
-    public override string Type => "artist";
+    public string ChildType => "Album";
 }
 
 

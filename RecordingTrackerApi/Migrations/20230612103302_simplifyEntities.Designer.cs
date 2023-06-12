@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecordingTrackerApi.Data;
 
@@ -10,9 +11,11 @@ using RecordingTrackerApi.Data;
 namespace RecordingTrackerApi.Migrations
 {
     [DbContext(typeof(RecordingContext))]
-    partial class RecordingContextModelSnapshot : ModelSnapshot
+    [Migration("20230612103302_simplifyEntities")]
+    partial class simplifyEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,13 +100,6 @@ namespace RecordingTrackerApi.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Starred")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
