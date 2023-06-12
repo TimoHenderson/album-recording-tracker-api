@@ -74,12 +74,13 @@ namespace RecordingTrackerApi.Services
 
         public async Task<TEntityDTO?> Delete(string userId, int id)
         {
-            throw new NotImplementedException();
-            // var entity = await _dbSet.FindAsync(id);
-            // if (entity == null) return null;
-            // _dbSet.Remove(entity);
-            // await _context.SaveChangesAsync();
-            // return entity;
+            var storedEntity = await _dbSet.FirstOrDefaultAsync(
+                e => e.Id == id &&
+                e.AspNetUserId == userId);
+            if (storedEntity == null) return default;
+            _dbSet.Remove(storedEntity);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<TEntityDTO>(storedEntity);
         }
 
         public virtual Task<bool> ValidateRelationshipsAndAttach(TEntity entity) => Task.FromResult(true);

@@ -81,4 +81,17 @@ public class InstrumentServiceTest : IDisposable
         Assert.Equal(expected.Notes, result2.Notes);
         Assert.Equal("Instrument", result2.Type);
     }
+
+    [Fact]
+    public void CanDeleteInstrument()
+    {
+        // Act
+        service.Delete("1", 1);
+
+        var instruments = service.GetAll("1").Result;
+        var deletedInstrument = service.Get("1", 1).Result;
+        // Assert
+        Assert.Null(deletedInstrument);
+        Assert.Equal(1, instruments.Count());
+    }
 }
