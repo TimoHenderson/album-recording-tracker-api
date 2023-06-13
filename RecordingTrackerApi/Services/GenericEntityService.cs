@@ -33,7 +33,7 @@ namespace RecordingTrackerApi.Services
         public virtual async Task<IEnumerable<TEntityDTO>> GetAll(string userId)
         {
             return await _dbSet
-            .Where(e => e.AspNetUserId == userId)
+            .Where(e => e.AspNetUserId == userId || e.AspNetUserId == null)
                 .ProjectTo<TEntityDTO>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
@@ -42,7 +42,7 @@ namespace RecordingTrackerApi.Services
         public virtual async Task<TEntityDTO?> Get(string userId, int id)
         {
             return await _dbSet
-                .Where(e => e.Id == id)
+                .Where(e => e.Id == id && (e.AspNetUserId == userId || e.AspNetUserId == null))
                 .ProjectTo<TEntityDTO>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
         }
