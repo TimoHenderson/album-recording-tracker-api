@@ -6,6 +6,7 @@ using RecordingTrackerApi.Models.RecordingEntities;
 using RecordingTrackerApi.Models.RecordingEntities.DTOs;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using RecordingTrackerApi.Results;
 
 namespace RecordingTrackerApi.Services
 {
@@ -39,51 +40,67 @@ namespace RecordingTrackerApi.Services
 
         }
 
-        public virtual async Task<TEntityDTO?> Get(string userId, int id)
+        public virtual async Task<Result<TEntityDTO>> Get(string userId, int id)
         {
-            return await _dbSet
+            var entityDTO = await _dbSet
                 .Where(e => e.Id == id && (e.AspNetUserId == userId || e.AspNetUserId == null))
                 .ProjectTo<TEntityDTO>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
+
+            if (entityDTO == null) return Result<TEntityDTO>.Fail("Not found");
+            return Result<TEntityDTO>.Ok(entityDTO);
         }
 
 
-        public virtual async Task<TEntityDTO?> Create(string userId, TEntityDTO entityDTO)
+        public virtual async Task<Result<TEntityDTO>> Create(string userId, TEntityDTO entityDTO)
         {
+            var validateRelationshipsResult = await ValidateRelationships(userId, entityDTO);
+            if (!validateRelationshipsResult.IsValid)
+                return Result<TEntityDTO>.Fail(validateRelationshipsResult.ErrorMessage);
+
             var entity = _mapper.Map<TEntity>(entityDTO);
-            if (!await ValidateRelationshipsAndAttach(entity)) return default;
             _dbSet.Add(entity);
+
             await _context.SaveChangesAsync();
-            return _mapper.Map<TEntityDTO>(entity);
+
+            var savedDTO = _mapper.Map<TEntityDTO>(entity);
+            return Result<TEntityDTO>.Ok(savedDTO);
         }
 
-        public virtual async Task<TEntityDTO?> Update(string userId, TEntityDTO entityDTO)
+        public virtual async Task<Result<TEntityDTO>> Update(string userId, TEntityDTO entityDTO)
         {
-            var storedEntity = await _dbSet.FirstOrDefaultAsync(
-                e => e.Id == entityDTO.Id &&
-                e.AspNetUserId == userId);
+            var validateRelationshipsResult = await ValidateRelationships(userId, entityDTO);
+            if (!validateRelationshipsResult.IsValid)
+                return Result<TEntityDTO>.Fail(validateRelationshipsResult.ErrorMessage);
 
-            if (storedEntity == null) return default;
+            var storedEntity = await _dbSet.FirstOrDefaultAsync(e => e.Id == entityDTO.Id);
+            if (storedEntity == null) return Result<TEntityDTO>.Fail("Not found");
+
+            if (storedEntity.AspNetUserId != userId) return Result<TEntityDTO>.Fail("Not owned by user");
 
             _mapper.Map(entityDTO, storedEntity);
             var updatedEntity = _context.Update(storedEntity).Entity;
             await _context.SaveChangesAsync();
-            return _mapper.Map<TEntityDTO>(updatedEntity);
+            return Result<TEntityDTO>.Ok(_mapper.Map<TEntityDTO>(updatedEntity));
         }
 
 
-        public async Task<TEntityDTO?> Delete(string userId, int id)
+        public async Task<Result<TEntityDTO>> Delete(string userId, int id)
         {
-            var storedEntity = await _dbSet.FirstOrDefaultAsync(
-                e => e.Id == id &&
-                e.AspNetUserId == userId);
-            if (storedEntity == null) return default;
+            var storedEntity = await _dbSet.FirstOrDefaultAsync(e => e.Id == id);
+            if (storedEntity == null) return Result<TEntityDTO>.Fail("Not found");
+
+            if (storedEntity.AspNetUserId != userId) return Result<TEntityDTO>.Fail("Not owned by user");
             _dbSet.Remove(storedEntity);
             await _context.SaveChangesAsync();
-            return _mapper.Map<TEntityDTO>(storedEntity);
+
+            return Result<TEntityDTO>.Ok(_mapper.Map<TEntityDTO>(storedEntity));
         }
 
-        public virtual Task<bool> ValidateRelationshipsAndAttach(TEntity entity) => Task.FromResult(true);
+        public virtual Task<ValidateRelationshipsResult> ValidateRelationships(string UserId, TEntityDTO entityDTO)
+        {
+            return Task.FromResult(ValidateRelationshipsResult.Valid());
+        }
 
     }
 }
