@@ -37,15 +37,16 @@ public class InstrumentServiceTest
     {
         // Act
         var instrument = service.Get("1", 1).Result;
+        var dto = instrument.Value;
 
         // Assert
         var expected = new InstrumentDTO { Id = 1, Name = "Guitar", Starred = false, Notes = "" };
 
-        Assert.Equal(expected.Id, instrument.Id);
-        Assert.Equal(expected.Name, instrument.Name);
-        Assert.Equal(expected.Starred, instrument.Starred);
-        Assert.Equal(expected.Notes, instrument.Notes);
-        Assert.Equal("Instrument", instrument.Type);
+        Assert.Equal(expected.Id, dto.Id);
+        Assert.Equal(expected.Name, dto.Name);
+        Assert.Equal(expected.Starred, dto.Starred);
+        Assert.Equal(expected.Notes, dto.Notes);
+        Assert.Equal("Instrument", dto.Type);
     }
 
     [Fact]
@@ -56,15 +57,16 @@ public class InstrumentServiceTest
 
         // Act
         var result = service.Create("1", instrument).Result;
+        var dto = result.Value;
 
         // Assert
         var expected = new InstrumentDTO { Id = 9, Name = "Piano", Starred = false, Notes = "" };
 
-        Assert.Equal(expected.Id, result.Id);
-        Assert.Equal(expected.Name, result.Name);
-        Assert.Equal(expected.Starred, result.Starred);
-        Assert.Equal(expected.Notes, result.Notes);
-        Assert.Equal("Instrument", result.Type);
+        Assert.Equal(expected.Id, dto.Id);
+        Assert.Equal(expected.Name, dto.Name);
+        Assert.Equal(expected.Starred, dto.Starred);
+        Assert.Equal(expected.Notes, dto.Notes);
+        Assert.Equal("Instrument", dto.Type);
     }
 
     [Fact]
@@ -75,22 +77,25 @@ public class InstrumentServiceTest
 
         // Act
         var result = service.Update("1", instrument).Result;
+        var dto = result.Value;
 
         var result2 = service.Get("1", 1).Result;
+        var dto2 = result2.Value;
 
         // Assert
         var expected = new InstrumentDTO { Id = 1, Name = "Egg", Starred = false, Notes = "" };
 
-        Assert.Equal(expected.Id, result.Id);
-        Assert.Equal(expected.Name, result.Name);
-        Assert.Equal(expected.Starred, result.Starred);
-        Assert.Equal(expected.Notes, result.Notes);
-        Assert.Equal("Instrument", result.Type);
-        Assert.Equal(expected.Id, result2.Id);
-        Assert.Equal(expected.Name, result2.Name);
-        Assert.Equal(expected.Starred, result2.Starred);
-        Assert.Equal(expected.Notes, result2.Notes);
-        Assert.Equal("Instrument", result2.Type);
+        Assert.Equal(expected.Id, dto.Id);
+        Assert.Equal(expected.Name, dto.Name);
+        Assert.Equal(expected.Starred, dto.Starred);
+        Assert.Equal(expected.Notes, dto.Notes);
+        Assert.Equal("Instrument", dto.Type);
+        Assert.Equal(expected.Id, dto2.Id);
+        Assert.Equal(expected.Name, dto2.Name);
+        Assert.Equal(expected.Starred, dto2.Starred);
+        Assert.Equal(expected.Notes, dto2.Notes);
+        Assert.Equal("Instrument", dto2.Type);
+        Assert.True(result.Success);
     }
 
     [Fact]
@@ -103,7 +108,8 @@ public class InstrumentServiceTest
         var result = service.Update("1", instrument).Result;
 
         // Assert
-        Assert.Null(result);
+        Assert.Null(result.Value);
+        Assert.False(result.Success);
     }
 
     [Fact]
@@ -111,21 +117,25 @@ public class InstrumentServiceTest
     {
         // Act
         var initialNumInstruments = service.GetAll("1").Result.Count();
-        service.Delete("1", 1);
+        var result = service.Delete("1", 1).Result;
 
         var afterNumInstruments = service.GetAll("1").Result.Count();
         var deletedInstrument = service.Get("1", 1).Result;
         // Assert
-        Assert.Null(deletedInstrument);
+        Assert.Null(deletedInstrument.Value);
         Assert.Equal(initialNumInstruments - 1, afterNumInstruments);
+        Assert.True(result.Success);
+
     }
     [Fact]
     public void CanNotDeleteInstrumentWithInvalidId()
     {
 
-        var result = service.Delete("1", 5);
+        var result = service.Delete("1", 10).Result;
 
-        Assert.Null(result.Result);
+        Assert.Null(result.Value);
+        Assert.False(result.Success);
+        Assert.Equal("Not found", result.ErrorMessage);
 
     }
 }

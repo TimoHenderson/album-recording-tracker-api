@@ -1,5 +1,6 @@
 ﻿using RecordingTrackerApi.Models.RecordingEntities;
 using RecordingTrackerApi.Models.RecordingEntities.DTOs;
+using RecordingTrackerApi.Results;
 
 namespace RecordingTrackerApi.Services
 {
@@ -9,13 +10,13 @@ namespace RecordingTrackerApi.Services
     {
         public Task<IEnumerable<TEntityDTO>> GetAll(string userId);
 
-        public Task<TEntityDTO?> Get(string userId, int id);
+        public Task<Result<TEntityDTO>> Get(string userId, int id);
 
-        public Task<TEntityDTO?> Create(string userId, TEntityDTO entity);
+        public Task<Result<TEntityDTO>> Create(string userId, TEntityDTO entity);
 
-        public Task<TEntityDTO?> Delete(string userId, int id);
+        public Task<Result<TEntityDTO>> Delete(string userId, int id);
 
-        public Task<TEntityDTO?> Update(string userId, TEntityDTO entity);
+        public Task<Result<TEntityDTO>> Update(string userId, TEntityDTO entity);
 
     }
 }

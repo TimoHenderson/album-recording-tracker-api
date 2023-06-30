@@ -39,43 +39,54 @@ namespace RecordingTrackerApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TEntityDTO>>? Get(int id)
         {
-            var entity = await _service.Get(UserId, id);
+            var result = await _service.Get(UserId, id);
 
-            if (entity == null)
+            if (!result.Success)
             {
-                return NotFound();
+                return NotFound(result.ErrorMessage);
             }
 
-            return Ok(entity);
+            return Ok(result.Value);
         }
 
         [HttpPost]
         public async Task<ActionResult<TEntityDTO>> Post(TEntityDTO entity)
         {
-            var savedEntity = await _service.Create(UserId, entity);
-            if (savedEntity == null)
+            var result = await _service.Create(UserId, entity);
+            if (!result.Success)
             {
                 return Problem("Error - not created");
             }
 
-            return CreatedAtAction("Get", new { id = savedEntity.Id }, savedEntity);
+            return CreatedAtAction("Get", new { id = result.Value.Id }, result.Value);
         }
 
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, TEntityDTO entity)
         {
-            var updatedEntity = await _service.Update(UserId, entity);
-            if (updatedEntity == null) return BadRequest();
-            return Ok(updatedEntity);
+            entity.Id = id;
+            var result = await _service.Update(UserId, entity);
+
+            if (!result.Success)
+            {
+                return BadRequest(result.ErrorMessage);
+            }
+
+            return Ok(result.Value);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAlbum(int id)
         {
-            var deletedEntity = await _service.Delete(UserId, id);
-            if (deletedEntity == null) return BadRequest();
-            return Ok(deletedEntity);
+            var result = await _service.Delete(UserId, id);
+
+            if (!result.Success)
+            {
+                return BadRequest(result.ErrorMessage);
+            }
+
+            return Ok(result.Value);
         }
 
         private string UserId => HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
