@@ -33,9 +33,6 @@
   <ItemGroup>
     <ProjectReference Include="..\RecordingTrackerApi\RecordingTrackerApi.csproj" />  
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services/" />
-  </ItemGroup>
  
 
 </Project>
